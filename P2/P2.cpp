@@ -6,23 +6,28 @@
 int main()
 {
     int num1, num2;
+
     class singleBitAdder {
     public:
-        int sum;
-        int carry;
-        int add(int a, int b) {
-            sum = a ^ b; 
-            carry = a & b;
+        int sum,carryOut;
+        int add(int a, int b, int carryIn) {
+            sum = a ^ b ^ carryIn; 
+            carryOut = (a & b) | (carryIn & (a ^ b));
             return sum;
         }
     };
-    std::cout << "Please enter the first binary number (either 0 or 1): ";
-    num1 = std::cin.get();
-    std::cout << "Please enter the second binary number (either 0 or 1): ";
-    num2 = std::cin.get();
 
+    //User Input
+    std::cout << "Please enter the first binary number (either 0 or 1): ";
+    std::cin >> num1;
+    std::cout << "Please enter the second binary number (either 0 or 1): ";
+    std::cin >> num2;
+    
+
+    //Actual adding
     singleBitAdder adderUno;
-    std::cout << adderUno.add(num1, num2);
+    std::cout << "Sum value is: " << adderUno.add(num1, num2, 0) << std::endl;
+    std::cout << "Carry value is " << adderUno.carryOut << std::endl;
 
 
 }
