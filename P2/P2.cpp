@@ -1,4 +1,6 @@
 #include <iostream>
+#include <vector>
+#include <cmath>
 
 
 //This is an attempt to build a binary adder
@@ -36,18 +38,16 @@ int main()
 
     private: 
         bool sum, carry;
-        int totalSum[8];
+        std::vector<bool> totalSum;
 
     public:
-        nBitAdder ()
+        nBitAdder (std::vector<bool> num1, std::vector<bool> num2)
         {
-            int num1[8] = { 0,0,0,0,0,0 };
 
-            int num2[8] = { 0,0,0,0,0,0 };
             bool carry = false;
-            for (int h = 0; h < 8; h++) {                
+            for (int h = 0; h < num1.size(); h++) {
                 BitAdder adderUno(num1[h], num2[h], carry);
-                carry = adderUno.getCarry();
+                
 
                 std::cout << "---------------: " << std::endl;
                 std::cout << "Sum value is: " << adderUno.getSum() << std::endl;
@@ -56,13 +56,14 @@ int main()
                 std::cout << ""  << std::endl;
 
 
-                totalSum[h] = adderUno.getSum();
+                totalSum.push_back(adderUno.getSum());
+                carry = adderUno.getCarry();
 
                 
             }
         }
 
-        int getSum() {
+        std::vector<bool> getSum() {
             return totalSum;
         }
     };
@@ -73,32 +74,29 @@ int main()
     //User Input
     std::cout << "Please enter the first binary number (either 0 or 1): ";
     std::cin >> input1;
+    std::vector<bool> binary1 = convertDecToBinary(input1); 
+
     std::cout << "Please enter the second binary number (either 0 or 1): ";
     std::cin >> input2;
+    std::vector<bool> binary2 = convertDecToBinary(input2);
     
 
+    nBitAdder fullAdder(binary1, binary2);
 
-    //Actual adding
-    BitAdder adderUno(1,1,0);
-    std::cout << "Sum value is: " << adderUno.getSum() << std::endl;
-    std::cout << "Carry value is " << adderUno.getCarry() << std::endl;
 
-    //nBit adding
-    nBitAdder fullAdder;
-    std::cout << "Total sum value is: " << fullAdder.getSum() << std::endl;
+
  
 
 }
 
 //Convert user input to bits
-int convertDecToBinary(int g)
+std::vector<bool> convertDecToBinary(int g)
 {
-    int binArrayMirror[16], bitSize = 0;
-
-    for (int i = 0; g > 0; i++) {
-        binArrayMirror[i] = g % 2;
+    std::vector<bool> binArray;
+    while (g > 0) {
+        binArray.push_back(g % 2);
         g = g / 2;
-        bitSize += 1;
     }
-    return 0;
+    std::reverse(binArray.begin(), binArray.end());
+    return binArray;
 }
