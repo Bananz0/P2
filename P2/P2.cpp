@@ -1,8 +1,11 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
+#include <algorithm>
 
 
+std::vector<bool> convertDecToBinary(int g);
+int convertBinaryToDec(std::vector<bool> binaryArray);
 //This is an attempt to build a binary adder
 
 int main()
@@ -43,12 +46,12 @@ int main()
     public:
         nBitAdder (std::vector<bool> num1, std::vector<bool> num2)
         {
-
+            int maxSize = std::max(num1.size(), num2.size());
             bool carry = false;
-            for (int h = 0; h < num1.size(); h++) {
+            for (int h = 0; h < maxSize; h++) {
                 BitAdder adderUno(num1[h], num2[h], carry);
                 
-
+                std::cout << "" << std::endl;
                 std::cout << "---------------: " << std::endl;
                 std::cout << "Sum value is: " << adderUno.getSum() << std::endl;
                 std::cout << "Carry value is " << adderUno.getCarry() << std::endl;
@@ -58,6 +61,9 @@ int main()
 
                 totalSum.push_back(adderUno.getSum());
                 carry = adderUno.getCarry();
+                if (maxSize == h) {
+                    carry = adderUno.getCarry();
+                }
 
                 
             }
@@ -82,6 +88,7 @@ int main()
     
 
     nBitAdder fullAdder(binary1, binary2);
+    int decTotal = convertBinaryToDec(fullAdder.getSum());
 
 
 
@@ -98,5 +105,16 @@ std::vector<bool> convertDecToBinary(int g)
         g = g / 2;
     }
     std::reverse(binArray.begin(), binArray.end());
+    for (int y = 0; y < binArray.size(); y++) {
+        std::cout << binArray[y] << std::endl;
+    }
     return binArray;
+}
+
+int convertBinaryToDec(std::vector<bool> binaryArray) {
+    int decNum = 0;
+    for (int j = 0; j < binaryArray.size(); j++) {
+        decNum += binaryArray[j] * pow(2, j);
+    }
+    return decNum;
 }
