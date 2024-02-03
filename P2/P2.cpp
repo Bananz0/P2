@@ -49,20 +49,23 @@ int main()
             int maxSize = std::max(num1.size(), num2.size());
             bool carry = false;
             for (int h = 0; h < maxSize; h++) {
-                BitAdder adderUno(num1[h], num2[h], carry);
+                bool bit1 = h < num1.size() ? num1[h] : 0;
+                bool bit2 = h < num2.size() ? num2[h] : 0;
+                BitAdder adderUno(bit1, bit2, carry);
                 
-                std::cout << "" << std::endl;
-                std::cout << "---------------: " << std::endl;
-                std::cout << "Sum value is: " << adderUno.getSum() << std::endl;
-                std::cout << "Carry value is " << adderUno.getCarry() << std::endl;
-                std::cout << "---------------: " << std::endl;
-                std::cout << ""  << std::endl;
+                //std::cout << "" << std::endl;
+                //std::cout << "---------------: " << std::endl;
+                //std::cout << "Sum value is: " << adderUno.getSum() << std::endl;
+                //std::cout << "Carry value is " << adderUno.getCarry() << std::endl;
+                //std::cout << "---------------: " << std::endl;
+                //std::cout << ""  << std::endl;
 
 
                 totalSum.push_back(adderUno.getSum());
+                std::cout << totalSum[h];
                 carry = adderUno.getCarry();
-                if (maxSize == h) {
-                    carry = adderUno.getCarry();
+                if (h == maxSize - 1) {
+                    totalSum.push_back(adderUno.getCarry());
                 }
 
                 
@@ -88,8 +91,12 @@ int main()
     
 
     nBitAdder fullAdder(binary1, binary2);
+
+    //int decTotal = convertBinaryToDec({1,0,1,1,1,0,1});
     int decTotal = convertBinaryToDec(fullAdder.getSum());
 
+
+    std::cout << decTotal;
 
 
  
@@ -106,15 +113,18 @@ std::vector<bool> convertDecToBinary(int g)
     }
     std::reverse(binArray.begin(), binArray.end());
     for (int y = 0; y < binArray.size(); y++) {
-        std::cout << binArray[y] << std::endl;
+        std::cout << binArray[y];
     }
+    std::cout << std::endl;
     return binArray;
 }
 
 int convertBinaryToDec(std::vector<bool> binaryArray) {
     int decNum = 0;
-    for (int j = 0; j < binaryArray.size(); j++) {
-        decNum += binaryArray[j] * pow(2, j);
+    int n = binaryArray.size();
+    std::cout << "The size of the binary array is: " << n << std::endl;
+    for (int j = 0; j < n; j++) {
+        decNum += binaryArray[j] * pow(2, n - j - 1);
     }
     return decNum;
 }
